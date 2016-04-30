@@ -11,26 +11,23 @@ app.get("/", function(req, res) {
 	var accessKey = '';
 
 	// rest api example
-	var
+	var headerObject = {
+		"Authorization" : bearerToken,
+		"Content-Type" : 'application/x-www-form-urlencoded;charset=UTF-8'
+	};
 
+	var requestParams = {
+		url : 'https://api.twitter.com/oauth2/token',
+		qs: {
+			grant_type: 'client_credentials'
+		},
+		headers: headerObject,
+		method: 'POST',
+	};
 
-
-
-
-			request({
-    	url: 'https://api.twitter.com/oauth2/token', //URL to hit
-    	qs: {
-			grant_type: "client_credentials"
-			}, headers: {
-				"Authorization" : bearerToken,
-				"Content-Type" : 'application/x-www-form-urlencoded;charset=UTF-8',
-			},
-    		method: 'POST', //Specify the method
-			}, function(error, response, body){
-				bearerToken = JSON.parse(body)["access_token"];
-			}
+	request(requestParams, function(error, response, body) {
+		accessKey = JSON.parse(body)['access_token']; }
 	);
-
 
 	res.render('index');
 });
