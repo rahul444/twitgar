@@ -12,12 +12,12 @@ app.get("/", function(req, res) {
 
 	// rest api example
 	var headerObject = {
-		"Authorization" : bearerToken,
-		"Content-Type" : 'application/x-www-form-urlencoded;charset=UTF-8'
+		"Authorization": bearerToken,
+		"Content-Type": 'application/x-www-form-urlencoded;charset=UTF-8'
 	};
 
 	var requestParams = {
-		url : 'https://api.twitter.com/oauth2/token',
+		url: 'https://api.twitter.com/oauth2/token',
 		qs: {
 			grant_type: 'client_credentials'
 		},
@@ -33,15 +33,26 @@ app.get("/", function(req, res) {
 });
 
 app.get('/search', function(req, res) {
-	// var text = req['query']['text'];
-	// var
-	// var requestParams = {
-	// 	url : 'https://api.twitter.com/1.1/search/tweets.json',
-	// 	qs : {
-	//
-	// 	}.
-	// 	headers:
-	// }
+	var text = req['query']['text'];
+	var data = [];
+	var requestParams = {
+		url: 'https://api.twitter.com/1.1/search/tweets.json',
+		qs: { q: text },
+		headers: { "Authorization" : "Bearer " + accessKey },
+		method: 'GET'
+	};
+	request(requestParams, function(error, response, body) {
+		var tweets = JSON.parse(body)['statuses'];
+		for (var i = 0; i < tweets.length; i++) {
+			data.push({
+				text : tweets[i]['text'],
+				followers : tweets[i]['user']['followers_count'],
+				favorites : tweets[i]['favorite_count']
+			});
+		}
+		console.log(data);
+		res.json(data);
+	});
 });
 
 app.listen(3000, function() {
