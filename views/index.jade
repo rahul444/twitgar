@@ -1,7 +1,18 @@
 doctype html
 html(lang="en")
+  head
     script(type='text/javascript' src='http://code.jquery.com/jquery.min.js')
     script.
       $(document).ready(function() {
-        console.log('hello');
+        $('#search').click(function() {
+          $.get( '/search', { text : $('#text').val() },
+            function(data) {
+              console.log(data);
+            }
+          );
+        });
       });
+  body
+    input#text
+    button#search.
+      search
