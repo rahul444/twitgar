@@ -7,9 +7,11 @@ app.set('view engine', 'jade');
 app.get("/", function(req, res) {
 	var consumerKey = '6oYlhphzgPhm04dkaAMvS5QtK';
   var consumerSecret = 'iiHIQE6y0uvSSTLs2Hi3JIQrGVLItCsqFNOqeSX3ZFkspE29bo';
-	var bearerToken = "Basic " + new Buffer(consumerKey + ":" + consumerSecret).toString('base64');
+	var bearerToken = 'Basic ' + new Buffer(consumerKey + ':' + consumerSecret).toString('base64');
+	var accessKey = '';
 
 	// rest api example
+	var
 
 
 
@@ -20,9 +22,8 @@ app.get("/", function(req, res) {
     	qs: {
 			grant_type: "client_credentials"
 			}, headers: {
-				"Host" : "api.twitter.com",
 				"Authorization" : bearerToken,
-				"Content-Type" : "application/x-www-form-urlencoded;charset=UTF-8",
+				"Content-Type" : 'application/x-www-form-urlencoded;charset=UTF-8',
 			},
     		method: 'POST', //Specify the method
 			}, function(error, response, body){
@@ -35,5 +36,5 @@ app.get("/", function(req, res) {
 });
 
 app.listen(3000, function() {
-	console.log("started server at htpp://localhost:3000");
+	console.log('started server at htpp://localhost:3000');
 });
