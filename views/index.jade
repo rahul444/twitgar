@@ -3,8 +3,11 @@ html(lang="en")
   head
     script(type='text/javascript' src='http://code.jquery.com/jquery.min.js')
     script(type='text/javascript' src='../js/ball.js')
+    link(href='../css/index.css', rel='stylesheet')
     script.
+
       $(document).ready(function() {
+
         $('#search').click(function() {
           $.get( '/search', { text : $('#text').val() },
             function(data) {
@@ -17,3 +20,7 @@ html(lang="en")
     canvas(id = 'paint')
     input(id = 'text')
     button(id = 'search') search
+<<<<<<< HEAD
+=======
+    div(id = 'invisibleDiv')
+>>>>>>> aravind-frontend

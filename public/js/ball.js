@@ -164,7 +164,9 @@ function checkOnBall(x, y) {
 }
 
 function displayText(b) {
-    alert(b.txt);
+    var invisibleDiv = document.getElementById('invisibleDiv');
+    invisibleDiv.innerHTML = b.txt;
+    invisibleDiv.style.visibility = "visible";
 }
 
 function getWidth() {
