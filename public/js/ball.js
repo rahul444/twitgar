@@ -286,6 +286,7 @@ function clear() {
     context.clearRect(0, 0, myCanvas.width, myCanvas.height);
     clearInterval(animationId);
     bArr = [];
+    excessArr = [];
   }
 }
 
