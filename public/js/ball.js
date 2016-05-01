@@ -18,7 +18,7 @@ function ball(text, user, likes, followers) {
     this.user = user;
     this.likes = likes;
     this.followers = followers;
-    this.rad = ((likes + followers) % 90) + 60;
+    this.rad = ((likes + followers) % 70) + 60;
     this.area = Math.PI * this.rad * this.rad;
     this.time = 0;
     var bCols = ["#99e6ff", "#80ccff", "#66a3ff", "#4d4dff", "#0040ff"];
