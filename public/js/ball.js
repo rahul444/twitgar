@@ -14,7 +14,6 @@ function loadData(tweetArr) {
     } else {
         excessArr.push(b);
     }
-    console.log(b);
   }
 
   bArr.sort(function(a, b) {return a.rad < b.rad});
