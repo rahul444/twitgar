@@ -33,7 +33,7 @@ function ball(text, user, likes, followers) {
   this.time = 0;
   this.grow = this.rad;
   this.newRad = this.rad;
-  var bCols = ["#99e6ff", "#80ccff", "#66a3ff", "#4d4dff", "#0040ff"];
+  var bCols = ["#89e6ff", "#82ccff", "#56a3ff", "#3d3fff", "#0041ff"];
   this.col = bCols[Math.floor(Math.random() * bCols.length)];
 
   this.x = Math.floor(Math.random() * (w - (2 * this.rad)) + this.rad);
