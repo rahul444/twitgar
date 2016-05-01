@@ -4,7 +4,7 @@ var context, myCanvas;
 var bArr = [];
 
 function loadData(tweetArr) {
-    var lim = Math.min(13, tweetArr.length);
+    var lim = Math.min(10, tweetArr.length);
     for (var i = 0; i < lim; i++) {
         var tweet = tweetArr[i];
         var b = new ball(tweet['text'], tweet['name'], tweet['favorites'], tweet['followers']);
