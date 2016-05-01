@@ -1,6 +1,6 @@
 #paint{
   margin-top: -9px;
-  background-color:  #ffe6e6;
+  background-color:  #4dd2ff;
 }
 
 #container{
@@ -15,7 +15,7 @@
   visibility: hidden;
   width: 500px;
   height: 75px;
-  background-color: #4dc3ff;
+  background-color: #4dd2ff;
   color: white;
   font: Helvetica;
   border-radius: 5px;
