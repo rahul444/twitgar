@@ -5,13 +5,12 @@ html(lang="en")
     script(type='text/javascript' src='../js/ball.js')
     link(href='../css/index.css', rel='stylesheet')
     script.
-
       $(document).ready(function() {
-
         $('#search').click(function() {
+          clear();
           $.get( '/search', { text : $('#text').val() },
-            function(data){
-              drawMultiple(5);
+            function(data) {
+              loadData(data);
             }
           );
         });
