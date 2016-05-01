@@ -115,19 +115,21 @@ function draw(arr) {
         b.grow += 0.3;
     }
 
-    b.time += speed;
-    context.beginPath();
-    context.fillStyle=b.col;
-    context.arc(b.x,b.y,b.rad,0,Math.PI*2,true);
-    // b.rad += 0.1;
-    context.closePath();
-    context.fill();
+    if (b.rad > 0) {
+        b.time += speed;
+        context.beginPath();
+        context.fillStyle=b.col;
+        context.arc(b.x,b.y,b.rad,0,Math.PI*2,true);
+        // b.rad += 0.1;
+        context.closePath();
+        context.fill();
 
-    boundary(b);
-    bounce(arr, i);
+        boundary(b);
+        bounce(arr, i);
 
-    b.x+=b.dx;
-    b.y+=b.dy;
+        b.x+=b.dx;
+        b.y+=b.dy;
+    }
   }
 }
 
@@ -240,7 +242,6 @@ function getMousePos(e) {
   var mouseX = e.clientX;
   var mouseY = e.clientY;
   var clickedBall = checkOnBall(mouseX, mouseY);
-  console.log(mouseX +", " + mouseY);
   if (clickedBall != null) {
     displayText(clickedBall);
   }
