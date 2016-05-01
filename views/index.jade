@@ -10,6 +10,12 @@ html(lang="en")
           clear();
           getNewBalls();
         });
+        $("#text").keyup(function(event){
+            if(event.keyCode == 13){
+                clear();
+                getNewBalls();
+            }
+        });
       });
   body(onLoad = "init($('#paint'));")
     canvas(id = 'paint')
