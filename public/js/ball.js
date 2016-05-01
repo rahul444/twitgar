@@ -2,14 +2,18 @@ var w, h;
 var speed = 50;
 var context, myCanvas;
 var bArr = [];
+var excessArr = [];
 var animationId;
 
 function loadData(tweetArr) {
-  var lim = Math.min(10, tweetArr.length);
-  for (var i = 0; i < lim; i++) {
+  for (var i = 0; i < tweetArr.length; i++) {
     var tweet = tweetArr[i];
     var b = new ball(tweet['text'], tweet['name'], tweet['favorites'], tweet['followers']);
-    bArr.push(b);
+    if (i < 12) {
+        bArr.push(b);
+    } else {
+        excessArr.push(b);
+    }
   }
 
   bArr.sort(function(a, b) {return a.rad < b.rad});
@@ -27,6 +31,8 @@ function ball(text, user, likes, followers) {
   this.rad = ((likes + followers) % 70) + 60;
   this.area = Math.PI * this.rad * this.rad;
   this.time = 0;
+  this.grow = this.rad;
+  this.newRad = this.rad;
   var bCols = ["#99e6ff", "#80ccff", "#66a3ff", "#4d4dff", "#0040ff"];
   this.col = bCols[Math.floor(Math.random() * bCols.length)];
 
@@ -41,11 +47,23 @@ function ball(text, user, likes, followers) {
   else this.dy = 1.5;
 }
 
+function copyBall(b, b2) {
+    b.txt = b2.txt;
+    b.user = b2.user;
+    b.likes = b2.likes;
+    b.followers = b2.followers;
+    b.grow = 1;
+    b.newRad = b2.rad;
+    b.area = b2.area;
+    b.col = b2.col;
+    b.time = 0;
+}
+
 function init(canvas) {
   myCanvas = canvas.get(0);
   myCanvas.width = getWidth();
   myCanvas.height = 0.92 * getHeight();
-  // myCanvas.addEventListener("click", getMousePos, false);
+  myCanvas.addEventListener("click", getMousePosClick);
   myCanvas.addEventListener("mousemove", getMousePos);
   w = myCanvas.width;
   h = myCanvas.height;
@@ -62,7 +80,7 @@ function drawBalls() {
     arr.push(ball);
   }
   bArr = arr;
-  animationId = setInterval(draw, speed, arr);
+  animationId = setInterval(draw, speed, bArr);
 }
 
 function newPos(ball) {
@@ -85,26 +103,63 @@ function draw(arr) {
   for (var i = 0; i < arr.length; i++) {
     var b = arr[i];
     if (b.time >= 20000) {
-        destroyBall(b);
-        // console.log("ball died");
-    } else {
-        b.time += speed;
-        context.beginPath();
-        context.fillStyle=b.col;
-        context.arc(b.x,b.y,b.rad,0,Math.PI*2,true);
-        // b.rad += 0.1;
-        context.closePath();
-        context.fill();
-        bounce(arr, i);
-
-        // Boundary
-        if(b.x + b.dx < b.rad || b.x + b.dx > w - b.rad) b.dx = -b.dx;
-        if(b.y + b.dx < b.rad || b.y + b.dy > h - b.rad) b.dy = -b.dy;
-
-        b.x+=b.dx;
-        b.y+=b.dy;
+        b.rad -= 1.5;
+        if (b.rad < 1) {
+            // destroyBall(b);
+            copyBall(b, excessArr.shift());
+        }
     }
+
+    if (b.grow < b.newRad) {
+        b.rad += 0.3;
+        b.grow += 0.3;
+    }
+
+    b.time += speed;
+    context.beginPath();
+    context.fillStyle=b.col;
+    context.arc(b.x,b.y,b.rad,0,Math.PI*2,true);
+    // b.rad += 0.1;
+    context.closePath();
+    context.fill();
+
+    boundary(b);
+    bounce(arr, i);
+
+    b.x+=b.dx;
+    b.y+=b.dy;
   }
+}
+
+function boundary(b) {
+    var visitedX = false;
+    var visitedY = false;
+    while (b.x + b.dx < b.rad) {
+        b.x += 1;
+        visitedX = true;
+    }
+
+     while (b.x + b.dx > w - b.rad) {
+        b.x -= 1;
+        visitedX = true;
+     }
+
+     while (b.y + b.dx < b.rad) {
+         b.y += 1;
+         visitedY = true;
+     }
+
+     while (b.y + b.dy > h - b.rad) {
+         b.y -= 1;
+         visitedY = true;
+     }
+
+     if (visitedX) {
+         b.dx = -b.dx;
+     }
+     if (visitedY) {
+         b.dy = -b.dy;
+     }
 }
 
 function bounce(arr, i) {
@@ -118,16 +173,40 @@ function bounce(arr, i) {
 }
 
 function makeBounce(b1, b2) {
-    if (intersects(b1, b2)) {
-        var dist = distance(b1, b2);
-        if (dist <= b1.rad + b2.rad) {
-            var tempx = b1.dx;
-            var tempy = b1.dy;
-            b1.dx = b2.dx;
-            b2.dx = tempx;
-            b1.dy = b2.dy;
-            b2.dy = tempy;
+    var deltaX = b2.x - b1.x;
+    var deltaY = b2.y - b1.y;
+
+    var randX = Math.abs(b1.dx);
+    var randY = Math.abs(b2.dy);
+    if (overlaps(b1, b2)){
+        if (deltaX >= 0 && deltaY >= 0) {
+            b2.dx = randX;
+            b1.dx = -b2.dx;
+            b2.dy = randY;
+            b1.dy = -b2.dy;
+        } else if (deltaX >= 0 && deltaY <= 0) {
+            b2.dx = randX;
+            b1.dx = -b2.dx;
+            b2.dy = -randY;
+            b1.dy = -b2.dy;
+        } else if (deltaX <= 0 && deltaY <= 0) {
+            b2.dx = -randX;
+            b1.dx = -b2.dx;
+            b2.dy = -randY;
+            b1.dy = -b2.dy;
+        } else {
+            b2.dx = -randX;
+            b1.dx = -b2.dx;
+            b2.dy = randY;
+            b1.dy = -b2.dy;
         }
+    }
+
+    while (overlaps(b1, b2)) {
+        b1.x += b1.dx;
+        b2.x += b2.dx;
+        b1.y += b1.dy;
+        b2.y += b2.dy;
     }
 }
 
@@ -161,10 +240,28 @@ function getMousePos(e) {
   var mouseX = e.clientX;
   var mouseY = e.clientY;
   var clickedBall = checkOnBall(mouseX, mouseY);
+  console.log(mouseX +", " + mouseY);
   if (clickedBall != null) {
     displayText(clickedBall);
   }
 }
+
+function getMousePosClick(e) {
+  var mouseX = e.clientX;
+  var mouseY = e.clientY;
+  checkClick(mouseX, mouseY);
+}
+
+function checkClick(x, y) {
+    for (var i = 0; i < bArr.length; i++) {
+      var b = bArr[i];
+      if (pDistance(x, y, b.x, b.y) < b.rad) {
+        b.time = 21000;
+        // alert(b.time);
+      }
+    }
+}
+
 
 function checkOnBall(x, y) {
   for (var i = 0; i < bArr.length; i++) {
@@ -200,6 +297,7 @@ function destroyBall(b) {
         }
     }
     bArr = newArr;
+    bArr.push(excessArr.shift());
 }
 
 function getNewBalls() {
