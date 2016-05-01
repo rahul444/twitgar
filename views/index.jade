@@ -2,19 +2,19 @@ doctype html
 html(lang="en")
   head
     script(type='text/javascript' src='http://code.jquery.com/jquery.min.js')
+    script(type='text/javascript' src='../js/ball.js')
     script.
       $(document).ready(function() {
         $('#search').click(function() {
           $.get( '/search', { text : $('#text').val() },
-            function(data) {
-              $('#result').text(data);
-              
+            function(data){
+              drawMultiple(5);
             }
           );
         });
       });
-  body
-    input#text
-    button#search.
-      search
-    p#result
+  body(onLoad = "init($('#paint'));")
+    canvas(id = 'paint')
+    input(id = 'text')
+    button(id = 'search') search
+    
