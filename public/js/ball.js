@@ -107,7 +107,7 @@ function bounce(arr, i) {
 function makeBounce(b1, b2) {
     if (intersects(b1, b2)) {
            var dist = distance(b1, b2);
-           if (dist < b1.rad + b2.rad) {
+           if (dist <= b1.rad + b2.rad) {
                var tempx = b1.dx;
                var tempy = b1.dy;
                b1.dx = b2.dx;
