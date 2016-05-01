@@ -38,7 +38,7 @@ app.get('/search', function(req, res) {
 	var data = [];
 	var requestParams = {
 		url: 'https://api.twitter.com/1.1/search/tweets.json',
-		qs: { q: text },
+		qs: { q: text, count : '100' },
 		headers: { "Authorization" : "Bearer " + accessKey },
 		method: 'GET'
 	};
