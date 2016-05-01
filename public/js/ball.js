@@ -1,6 +1,7 @@
 var w, h;
 var speed = 40;
 var context, myCanvas;
+var bArr = [];
 
 function ball(text, user, likes, followers) {
     this.txt = text;
@@ -33,6 +34,7 @@ function init(canvas) {
   myCanvas = canvas.get(0);
   myCanvas.width = getWidth();
   myCanvas.height = 0.92 * getHeight();
+  myCanvas.addEventListener("click", getMousePos, false);
   w = myCanvas.width;
   h = myCanvas.height;
   context = myCanvas.getContext('2d');
@@ -47,6 +49,7 @@ function drawMultiple(n) {
             newPos(b);
         }
         arr.push(b);
+        bArr.push(b);
     }
     setInterval(draw, speed, arr);
 }
@@ -115,6 +118,10 @@ function distance(b1, b2) {
     return Math.sqrt(((b1.x - b2.x) * (b1.x - b2.x)) + ((b1.y - b2.y) * (b1.y - b2.y)));
 }
 
+function pDistance(x1, y1, x2, y2) {
+    return Math.sqrt(((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2)));
+}
+
 function overlaps(b1, b2) {
     var dist = distance(b1, b2);
     if (dist <= b1.likes + b2.likes) {
@@ -131,6 +138,29 @@ function intersects(b1, b2) {
             return true;
     }
     return false;
+}
+
+function getMousePos(e) {
+    var mouseX = e.clientX;
+    var mouseY = e.clientY;
+    var clickedBall = checkOnBall(mouseX, mouseY);
+    if (clickedBall != null) {
+        displayText(clickedBall);
+    }
+}
+
+function checkOnBall(x, y) {
+    for (var i = 0; i < bArr.length; i++) {
+        var b = bArr[i];
+        if (pDistance(x, y, b.x, b.y) < b.likes) {
+            return b;
+        }
+    }
+    return null;
+}
+
+function displayText(b) {
+    alert(b.txt);
 }
 
 function getWidth() {
