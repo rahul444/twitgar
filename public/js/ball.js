@@ -9,6 +9,7 @@ function loadData(tweetArr) {
   for (var i = 0; i < tweetArr.length; i++) {
     var tweet = tweetArr[i];
     var b = new ball(tweet['text'], tweet['name'], tweet['favorites'], tweet['followers']);
+    b.url = tweet['url'];
     if (i < 12) {
         bArr.push(b);
     } else {
@@ -261,7 +262,9 @@ function checkClick(x, y) {
       var b = bArr[i];
       if (pDistance(x, y, b.x, b.y) < b.rad) {
         b.time = 21000;
-        // alert(b.time);
+        if (b.url) {
+          window.open(b.url);
+        }
       }
     }
 }
