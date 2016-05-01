@@ -28,11 +28,12 @@ function ball(text, user, likes, followers) {
   this.user = user;
   this.likes = likes;
   this.followers = followers;
-  this.rad = ((likes + followers) % 70) + 60;
+  this.rad = ((likes + followers) % (w / 23)) + (w / 26);
   this.area = Math.PI * this.rad * this.rad;
   this.time = 0;
   this.grow = this.rad;
   this.newRad = this.rad;
+
   var bCols = ["#89e6ff", "#80dfff", "#56a3ff", "#3385ff", "#0041ff"];
   this.col = bCols[Math.floor(Math.random() * bCols.length)];
 
