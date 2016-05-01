@@ -14,6 +14,7 @@ function loadData(tweetArr) {
     } else {
         excessArr.push(b);
     }
+    console.log(b);
   }
 
   bArr.sort(function(a, b) {return a.rad < b.rad});
@@ -107,7 +108,9 @@ function draw(arr) {
         b.rad -= 1.5;
         if (b.rad < 1) {
             // destroyBall(b);
-            copyBall(b, excessArr.shift());
+            if (excessArr.length != 0) {
+              copyBall(b, excessArr.shift());
+            }
         }
     }
 
