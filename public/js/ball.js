@@ -263,7 +263,7 @@ function checkClick(x, y) {
       var b = bArr[i];
       if (pDistance(x, y, b.x, b.y) < b.rad) {
         b.time = 21000;
-        if (b.url) {
+        if (b.url != undefined) {
           window.open(b.url);
         }
       }

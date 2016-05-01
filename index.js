@@ -48,6 +48,8 @@ app.get('/search', function(req, res) {
 			var URL;
 			if (tweets[i]['entities']['urls'][0]) {
 				URL = tweets[i]['entities']['urls'][0]['url'];
+			} else {
+				URL = undefined;
 			}
 			data.push({
 				url : URL,
