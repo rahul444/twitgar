@@ -1,4 +1,4 @@
-#invisibleDiv{
+#invisibleDiv {
   visibility: hidden;
   width: 290px;
   height: 60px;
@@ -10,4 +10,8 @@
   left: 50%;
   right: 25%;
   margin-left: -145px;
+}
+
+#search {
+  margin-left: 10px;
 }
