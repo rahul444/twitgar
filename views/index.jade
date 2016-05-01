@@ -8,11 +8,7 @@ html(lang="en")
       $(document).ready(function() {
         $('#search').click(function() {
           clear();
-          $.get( '/search', { text : $('#text').val() },
-            function(data) {
-              loadData(data);
-            }
-          );
+          getNewBalls();
         });
       });
   body(onLoad = "init($('#paint'));")

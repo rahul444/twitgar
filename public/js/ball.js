@@ -11,6 +11,11 @@ function loadData(tweetArr) {
     var b = new ball(tweet['text'], tweet['name'], tweet['favorites'], tweet['followers']);
     bArr.push(b);
   }
+
+  bArr.sort(function(a, b) {return a.rad < b.rad});
+  for (var i = 0; i < bArr.length; i++) {
+      bArr[i].time = i * 1000;
+  }
   drawBalls();
 }
 
@@ -40,7 +45,8 @@ function init(canvas) {
   myCanvas = canvas.get(0);
   myCanvas.width = getWidth();
   myCanvas.height = 0.92 * getHeight();
-  myCanvas.addEventListener("click", getMousePos, false);
+  // myCanvas.addEventListener("click", getMousePos, false);
+  myCanvas.addEventListener("mousemove", getMousePos);
   w = myCanvas.width;
   h = myCanvas.height;
   context = myCanvas.getContext('2d');
@@ -78,20 +84,26 @@ function draw(arr) {
   context.clearRect(0,0, w, h);
   for (var i = 0; i < arr.length; i++) {
     var b = arr[i];
-    context.beginPath();
-    context.fillStyle=b.col;
-    context.arc(b.x,b.y,b.rad,0,Math.PI*2,true);
-    // b.rad += 0.1;
-    context.closePath();
-    context.fill();
-    bounce(arr, i);
+    if (b.time >= 20000) {
+        destroyBall(b);
+        // console.log("ball died");
+    } else {
+        b.time += speed;
+        context.beginPath();
+        context.fillStyle=b.col;
+        context.arc(b.x,b.y,b.rad,0,Math.PI*2,true);
+        // b.rad += 0.1;
+        context.closePath();
+        context.fill();
+        bounce(arr, i);
 
-    // Boundary
-    if(b.x + b.dx < b.rad || b.x + b.dx > w - b.rad) b.dx = -b.dx;
-    if(b.y + b.dx < b.rad || b.y + b.dy > h - b.rad) b.dy = -b.dy;
+        // Boundary
+        if(b.x + b.dx < b.rad || b.x + b.dx > w - b.rad) b.dx = -b.dx;
+        if(b.y + b.dx < b.rad || b.y + b.dy > h - b.rad) b.dy = -b.dy;
 
-    b.x+=b.dx;
-    b.y+=b.dy;
+        b.x+=b.dx;
+        b.y+=b.dy;
+    }
   }
 }
 
@@ -177,6 +189,27 @@ function displayText(b) {
   invisibleDiv.innerHTML = b.txt;
   invisibleDiv.style.visibility = "visible";
 }
+
+function destroyBall(b) {
+    //animate b getting destroyed
+    var newArr = [];
+    for (var i = 0; i < bArr; i++) {
+        var newBall = bArr[i];
+        if (newBall !== b) {
+            newArr.push(newBall);
+        }
+    }
+    bArr = newArr;
+}
+
+function getNewBalls() {
+    $.get( '/search', { text : $('#text').val() },
+      function(data) {
+        loadData(data);
+      }
+    );
+}
+
 
 function getWidth() {
   if (window.innerHeight) {
