@@ -59,6 +59,7 @@ function copyBall(b, b2) {
     b.area = b2.area;
     b.col = b2.col;
     b.time = 0;
+    b.url = b2.url;
 }
 
 function init(canvas) {
