@@ -39,7 +39,7 @@ function ball(text, user, likes, followers) {
 function init(canvas) {
   myCanvas = canvas.get(0);
   myCanvas.width = getWidth();
-  myCanvas.height = 0.92 * getHeight();
+  myCanvas.height = 0.85 * getHeight();
   myCanvas.addEventListener("click", getMousePos, false);
   w = myCanvas.width;
   h = myCanvas.height;

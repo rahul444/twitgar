@@ -1,8 +1,27 @@
+#paint{
+  margin-top: -9px;
+  background-color:  #ffe6e6;
+}
+
+#container{
+  position: relative;
+
+  margin-top: 38px;
+}
+
 #invisibleDiv {
+
+  border: 5px solid #3399ff;
   visibility: hidden;
-  width: 290px;
-  height: 60px;
-  background-color: #cccccc;
+  width: 500px;
+  height: 75px;
+  background-color: #4dc3ff;
+  color: white;
+  font: Helvetica;
+  border-radius: 5px;
+  font-size: 20px;
+
+
   opacity: 0.6;
 
   position: absolute;
@@ -10,8 +29,34 @@
   left: 50%;
   right: 25%;
   margin-left: -145px;
+  padding: 7px;
+
+}
+
+
+
+#text{
+  width: 250px;
+  height: 30px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  margin-left: 20px;
+
 }
 
 #search {
+  border-radius: 5px;
   margin-left: 10px;
+  margin-bottom: auto;
+  width: 100px;
+  height: 25px;
+  background-color: #66b3ff;
+  color: white;
+  font-size: 15px;
+  margin-top: 15px;
+}
+
+#search:hover{
+  background-color: #80aaff
 }
