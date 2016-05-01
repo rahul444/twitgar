@@ -47,6 +47,7 @@ app.get('/search', function(req, res) {
 		for (var i = 0; i < tweets.length; i++) {
 			data.push({
 				text : tweets[i]['text'],
+				name: "@" + tweets[i]['user']['screen_name'],
 				followers : tweets[i]['user']['followers_count'],
 				favorites : tweets[i]['favorite_count']
 			});
@@ -57,5 +58,5 @@ app.get('/search', function(req, res) {
 });
 
 app.listen(3000, function() {
-	console.log('started server at htpp://localhost:3000');
+	console.log('started server at http://localhost:3000');
 });

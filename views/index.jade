@@ -7,8 +7,8 @@ html(lang="en")
       $(document).ready(function() {
         $('#search').click(function() {
           $.get( '/search', { text : $('#text').val() },
-            function(data){
-              drawMultiple(5);
+            function(data) {
+              loadData(data);
             }
           );
         });
@@ -17,4 +17,3 @@ html(lang="en")
     canvas(id = 'paint')
     input(id = 'text')
     button(id = 'search') search
-    
