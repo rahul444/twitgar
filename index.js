@@ -5,6 +5,7 @@ var request = require('request');
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 var accessKey = '';
+var port = process.env.PORT || 3000;
 
 app.get("/", function(req, res) {
 	var consumerKey = '6oYlhphzgPhm04dkaAMvS5QtK';
@@ -66,6 +67,6 @@ app.get('/search', function(req, res) {
 	});
 });
 
-app.listen(3000, function() {
-	console.log('started server at http://localhost:3000');
+app.listen(port, function() {
+  console.log('listening on: ' + port);
 });
