@@ -4,6 +4,50 @@ var context, myCanvas;
 var bArr = [];
 var excessArr = [];
 var animationId;
+var landingPageId;
+
+function landingPage() {
+    landingPageId = setInterval(drawLoad, 50);
+    var radius = Math.min(w/2.5, h/2.5);
+    var sb = new SimpleBall(w/2, h/2, radius);
+    var ftSize = sb.rad/2;
+    console.log(sb);
+
+    function drawLoad() {
+        context.clearRect(0,0, w, h);
+        context.beginPath();
+        context.fillStyle="#ff9966";
+
+        context.arc(sb.x, sb.y, sb.rad, 0, Math.PI*2, true);
+        context.closePath();
+        context.fill();
+        context.fillStyle = "#333";
+        context.font = ftSize + "px helvetica";
+        context.textAlign = "center";
+        context.fillText("Twitgar", sb.x, sb.y);
+        context.font = ftSize / 5 + "px helvetica"
+        context.fillText("Simple visualizer for recent tweets", sb.x, sb.y + (sb.rad / 3.5));
+
+        boundary(sb);
+
+        sb.x+=sb.dx;
+        sb.y+=sb.dy;
+    }
+
+    function SimpleBall(x, y, rad) {
+        this.x = x;
+        this.y = y;
+        var randX = Math.floor(Math.random() * 2);
+        var randY = Math.floor(Math.random() * 2);
+        var dx = (Math.random()*0.5) + 1;
+        var dy = (Math.random()*0.5) + 1;
+        if (randX == 1) this.dx = -dx;
+        else this.dx = dx;
+        if (randY == 1) this.dy = -dy;
+        else this.dy = dy;
+        this.rad = rad;
+    }
+}
 
 function loadData(tweetArr) {
   for (var i = 0; i < tweetArr.length; i++) {
@@ -285,6 +329,7 @@ function clear() {
   if (context) {
     context.clearRect(0, 0, myCanvas.width, myCanvas.height);
     clearInterval(animationId);
+    clearInterval(landingPageId);
     bArr = [];
     excessArr = [];
   }

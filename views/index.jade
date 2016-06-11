@@ -1,11 +1,13 @@
 doctype html
 html(lang="en")
   head
+    link(href='../css/index.css', rel='stylesheet')
     script(type='text/javascript' src='https://code.jquery.com/jquery.min.js')
     script(type='text/javascript' src='../js/ball.js')
-    link(href='../css/index.css', rel='stylesheet')
     script.
       $(document).ready(function() {
+        init($('#paint'));
+        landingPage();
         $('#search').click(function() {
           clear();
           getNewBalls();
@@ -19,7 +21,7 @@ html(lang="en")
       });
   body(onLoad = "init($('#paint'));")
     canvas(id = 'paint')
-    input(id = 'text')
+    input(id = 'text', placeHolder = 'Search for latest tweets')
     button(id = 'search') search
     div(id = 'container')
       div(id = 'invisibleDiv') 
