@@ -358,11 +358,14 @@ function destroyBall(b) {
 
 function getNewBalls() {
     displayText({txt: "<div style=color:#ff9956;font-style:bold;font-size:26px>Hover over a ball to view tweet </br>Click to dismiss and open relevant link</div>"})
-    $.get( '/search', { text : $('#text').val() },
-      function(data) {
-        loadData(data);
-      }
-    );
+    var query = $('#text').val();
+    if (query) {
+      $.get( '/search', { text : query },
+        function(data) {
+          loadData(data);
+        }
+      );
+    }
 }
 
 
