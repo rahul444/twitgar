@@ -5,6 +5,7 @@ var bArr = [];
 var excessArr = [];
 var animationId;
 var landingPageId;
+var waitTime = 41000;
 
 function landingPage() {
     landingPageId = setInterval(drawLoad, 50);
@@ -63,7 +64,7 @@ function loadData(tweetArr) {
 
   bArr.sort(function(a, b) {return a.rad < b.rad});
   for (var i = 0; i < bArr.length; i++) {
-      bArr[i].time = i * 1000;
+      bArr[i].time = i * ((Math.random() * 2000) + 1000);
   }
   drawBalls();
 }
@@ -149,7 +150,7 @@ function draw(arr) {
   context.clearRect(0,0, w, h);
   for (var i = 0; i < arr.length; i++) {
     var b = arr[i];
-    if (b.time >= 20000) {
+    if (b.time >= waitTime) {
         b.rad -= 1.5;
         if (b.rad < 1) {
             // destroyBall(b);
@@ -306,7 +307,7 @@ function checkClick(x, y) {
     for (var i = 0; i < bArr.length; i++) {
       var b = bArr[i];
       if (pDistance(x, y, b.x, b.y) < b.rad) {
-        b.time = 21000;
+        b.time = waitTime + 1000;
         if (b.url != undefined) {
           window.open(b.url);
         }
@@ -338,6 +339,7 @@ function clear() {
 function displayText(b) {
   var invisibleDiv = document.getElementById('invisibleDiv');
   invisibleDiv.innerHTML = b.txt;
+  invisibleDiv.style.width = w / 2.2 + "px";
   invisibleDiv.style.visibility = "visible";
 }
 
@@ -355,6 +357,7 @@ function destroyBall(b) {
 }
 
 function getNewBalls() {
+    displayText({txt: "<div style=color:#ff9956;font-style:bold;font-size:26px>Hover over a ball to view tweet </br>Click to dismiss and open relevant link</div>"})
     $.get( '/search', { text : $('#text').val() },
       function(data) {
         loadData(data);

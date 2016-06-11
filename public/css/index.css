@@ -1,43 +1,37 @@
 #paint{
-  margin-top: -9px;
-  margin-left: -7.2px;
+  margin-top: -8px;
+  margin-left: -8px;
   background-color:  #4dd2ff;
 }
 
 #container{
   position: relative;
-
-  margin-top: 38px;
+  margin-top: 32px;
 }
 
 #invisibleDiv {
-
-
   visibility: hidden;
-  width: 500px;
-  height: 75px;
+  width: 47%;
+  height: 85px;
   background-color: #008ae6;
   color: white;
-  font: Helvetica;
+  font-family: Helvetica;
   border-radius: 5px;
   font-size: 20px;
-
 
   opacity: 0.6;
 
   position: absolute;
-  bottom: 0px;
-  left: 50%;
-  right: 25%;
-  margin-left: -145px;
+  bottom: -8px;
+  right: 15%;
   padding: 7px;
 
 }
 
-
-
 #text{
-  width: 250px;
+  width: 16%;
+  min-width: 160px;
+  max-width: 340px;
   height: 30px;
   border-radius: 5px;
   margin-bottom: 15px;
@@ -50,8 +44,8 @@
   border-radius: 5px;
   margin-left: 10px;
   margin-bottom: auto;
-  width: 100px;
-  height: 25px;
+  width: 80px;
+  height: 30px;
   background-color: #66b3ff;
   color: white;
   font-size: 15px;
@@ -59,5 +53,5 @@
 }
 
 #search:hover{
-  background-color: #80aaff
+  background-color: #66caff
 }
