@@ -5,7 +5,7 @@ var bArr = [];
 var excessArr = [];
 var animationId;
 var landingPageId;
-var waitTime = 41000;
+var waitTime = 36000;
 
 function landingPage() {
     landingPageId = setInterval(drawLoad, 50);
