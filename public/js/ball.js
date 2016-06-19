@@ -6,6 +6,7 @@ var excessArr = [];
 var animationId;
 var landingPageId;
 var waitTime = 36000;
+var selectedBall = null;
 
 function landingPage() {
     landingPageId = setInterval(drawLoad, 50);
@@ -79,8 +80,9 @@ function ball(text, user, likes, followers) {
   this.time = 0;
   this.grow = this.rad;
   this.newRad = this.rad;
-
-  var bCols = ["#89e6ff", "#ffe066", "#56a3ff", "#ff9966", "#0041ff"];
+  this.highlight = false;
+  // #ffe066 #89e6ff
+  var bCols = ["#ff6666", "#4dff88", "#56a3ff", "#ff9966", "#0041ff"];
   this.col = bCols[Math.floor(Math.random() * bCols.length)];
 
   this.x = Math.floor(Math.random() * (w - (2 * this.rad)) + this.rad);
@@ -154,6 +156,7 @@ function draw(arr) {
         b.rad -= 1.5;
         if (b.rad < 1) {
             // destroyBall(b);
+            b.highlight = false;
             if (excessArr.length != 0) {
               copyBall(b, excessArr.shift());
             }
@@ -167,8 +170,15 @@ function draw(arr) {
 
     if (b.rad > 0) {
         b.time += speed;
+        if (b.highlight) {
+            context.beginPath();
+            context.fillStyle = "#ccff00";
+            context.arc(b.x, b.y, b.rad + 5, 0, Math.PI*2, true);
+            context.closePath();
+            context.fill();
+        }
         context.beginPath();
-        context.fillStyle=b.col;
+        context.fillStyle = b.col;
         context.arc(b.x,b.y,b.rad,0,Math.PI*2,true);
         // b.rad += 0.1;
         context.closePath();
@@ -291,7 +301,7 @@ function intersects(b1, b2) {
 function getMousePos(e) {
   var mouseX = e.clientX;
   var mouseY = e.clientY;
-  var clickedBall = checkOnBall(mouseX, mouseY);
+  var clickedBall = selectBall(mouseX, mouseY);
   if (clickedBall != null) {
     displayText(clickedBall);
   }
@@ -316,10 +326,15 @@ function checkClick(x, y) {
 }
 
 
-function checkOnBall(x, y) {
+function selectBall(x, y) {
   for (var i = 0; i < bArr.length; i++) {
     var b = bArr[i];
     if (pDistance(x, y, b.x, b.y) < b.rad) {
+      if (selectedBall) {
+        selectedBall.highlight = false;
+      }
+      b.highlight = true;
+      selectedBall = b;
       return b;
     }
   }
@@ -343,6 +358,7 @@ function displayText(b) {
   invisibleDiv.style.visibility = "visible";
 }
 
+// not being used
 function destroyBall(b) {
     //animate b getting destroyed
     var newArr = [];
@@ -382,7 +398,7 @@ function getWidth() {
     return document.body.clientWidth;
   }
 }
-//
+
 function getHeight() {
   if (window.innerHeight) {
     return window.innerHeight;
