@@ -52,6 +52,16 @@ app.get('/search', function(req, res) {
 					URL = tweets[i]['entities']['urls'][0]['url'];
 				} else {
 					URL = undefined;
+
+					var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+					var regex = new RegExp(expression);
+					var t = tweets[i]['text'];
+
+					if (t.match(regex)) {
+  						URL = t.match(regex);
+					} else {
+  						console.log("No match");
+					}
 				}
 				data.push({
 					url : URL,
