@@ -6,10 +6,11 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 var accessKey = '';
 var port = process.env.PORT || 3000;
+require('dotenv').config();
 
 app.get("/", function(req, res) {
-	var consumerKey = '6oYlhphzgPhm04dkaAMvS5QtK';
-  var consumerSecret = 'iiHIQE6y0uvSSTLs2Hi3JIQrGVLItCsqFNOqeSX3ZFkspE29bo';
+	var consumerKey = process.env.key;
+  	var consumerSecret = process.env.secret;
 	var bearerToken = 'Basic ' + new Buffer(consumerKey + ':' + consumerSecret).toString('base64');
 
 	// rest api example
