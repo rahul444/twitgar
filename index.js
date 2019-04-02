@@ -9,7 +9,7 @@ var port = process.env.PORT || 3000;
 
 app.get("/", function(req, res) {
 	var consumerKey = '6oYlhphzgPhm04dkaAMvS5QtK';
-  var consumerSecret = 'iiHIQE6y0uvSSTLs2Hi3JIQrGVLItCsqFNOqeSX3ZFkspE29bo';
+  	var consumerSecret = 'iiHIQE6y0uvSSTLs2Hi3JIQrGVLItCsqFNOqeSX3ZFkspE29bo';
 	var bearerToken = 'Basic ' + new Buffer(consumerKey + ':' + consumerSecret).toString('base64');
 
 	// rest api example
@@ -44,6 +44,7 @@ app.get('/search', function(req, res) {
 		method: 'GET'
 	};
 	request(requestParams, function(error, response, body) {
+		console.log(body);
 		var tweets = JSON.parse(body)['statuses'];
 		for (var i = 0; i < tweets.length; i++) {
 			if (tweets[i]['lang'] == 'en') {
