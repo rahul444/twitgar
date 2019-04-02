@@ -1,9 +1,10 @@
 var express = require('express');
+var path = require('path');
 var app = express();
 app.use(express.static('public'));
 var request = require('request');
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
+// app.set('views', __dirname + '/views');
+// app.set('view engine', 'jade');
 var accessKey = '';
 var port = process.env.PORT || 3000;
 require('dotenv').config();
@@ -32,7 +33,7 @@ app.get("/", function(req, res) {
 		accessKey = JSON.parse(body)['access_token']; }
 	);
 
-	res.render('index');
+	res.sendFile(path.join(__dirname+'/views/index.html'));
 });
 
 app.get('/search', function(req, res) {
@@ -61,7 +62,7 @@ app.get('/search', function(req, res) {
 					if (t.match(regex)) {
   						URL = t.match(regex);
 					} else {
-  						console.log("No match");
+  						// console.log("No match");
 					}
 				}
 				data.push({
@@ -73,7 +74,6 @@ app.get('/search', function(req, res) {
 				});
 			}
 		}
-		console.log(data);
 		res.json(data);
 	});
 });
