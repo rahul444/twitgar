@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link href="../css/index.css" type="text/css" rel="stylesheet">
+        <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
+        <script type="text/javascript" src="../js/ball.js"></script>
+        <script>
+            $(document).ready(function() {
+                init($('#paint'));
+                landingPage();
+                $('#search').click(function() {
+                    clear();
+                    getNewBalls();
+                });
+                $("#text").keyup(function(event){
+                    if(event.keyCode == 13){
+                        clear();
+                        getNewBalls();
+                    }
+                });
+            });
+        </script>
+        <title>Twitgar</title>
+    </head>
+    <body onLoad="init($('#paint'));">
+        <canvas id="paint"></canvas>
+        <input id="text" placeHolder="Search for latest tweets">
+        <button id="search">search</button>
+        <div id="container">
+            <div id="invisibleDiv"> 
+            </div>
+        </div>
+    </body>
+</html>
