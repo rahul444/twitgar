@@ -36,44 +36,43 @@ app.get("/", function(req, res) {
 });
 
 app.get('/search', function(req, res) {
-	var text = req['query']['text'];
+	var text = req['query']['text'] + ' -filter:retweets exclude:replies';
 	var data = [];
 	var requestParams = {
 		url: 'https://api.twitter.com/1.1/search/tweets.json',
-		qs: { q: text, count : '100' },
+		qs: { q: text, count : '100', lang: 'en' },
 		headers: { "Authorization" : "Bearer " + accessKey },
 		method: 'GET'
 	};
 	request(requestParams, function(error, response, body) {
 		var tweets = JSON.parse(body)['statuses'];
 		for (var i = 0; i < tweets.length; i++) {
-			if (tweets[i]['lang'] == 'en') {
-				var URL;
-				if (tweets[i]['entities']['urls'][0]) {
-					URL = tweets[i]['entities']['urls'][0]['url'];
+			var URL;
+			if (tweets[i]['entities']['urls'][0]) {
+				URL = tweets[i]['entities']['urls'][0]['url'];
+			} else {
+				URL = undefined;
+
+				var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+				var regex = new RegExp(expression);
+				var t = tweets[i]['text'];
+				console.log(tweets[i]['in_reply_to_user_id']);
+
+				if (t.match(regex)) {
+					URL = t.match(regex);
 				} else {
-					URL = undefined;
-
-					var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
-					var regex = new RegExp(expression);
-					var t = tweets[i]['text'];
-
-					if (t.match(regex)) {
-  						URL = t.match(regex);
-					} else {
-  						console.log("No match");
-					}
+					console.log("No match");
 				}
-				data.push({
-					url : URL,
-					text : tweets[i]['text'],
-					name: "@" + tweets[i]['user']['screen_name'],
-					followers : tweets[i]['user']['followers_count'],
-					favorites : tweets[i]['favorite_count']
-				});
 			}
+			data.push({
+				url : URL,
+				text : tweets[i]['text'],
+				name: "@" + tweets[i]['user']['screen_name'],
+				followers : tweets[i]['user']['followers_count'],
+				favorites : tweets[i]['favorite_count']
+				});
 		}
-		console.log(data);
+		// console.log(data);
 		res.json(data);
 	});
 });
