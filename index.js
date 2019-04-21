@@ -67,7 +67,8 @@ app.get('/search', function(req, res) {
 				text : tweets[i]['text'],
 				name: "@" + tweets[i]['user']['screen_name'],
 				followers : tweets[i]['user']['followers_count'],
-				favorites : tweets[i]['favorite_count']
+				favorites : tweets[i]['favorite_count'],
+				retweets: tweets[i]['retweet_count']
 				});
 		}
 		res.json(data);

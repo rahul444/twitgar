@@ -51,31 +51,66 @@ function landingPage() {
     }
 }
 
+function shuffle(a) {
+  var j, x, i;
+  for (i = a.length - 1; i > 0; i--) {
+      j = Math.floor(Math.random() * (i + 1));
+      x = a[i];
+      a[i] = a[j];
+      a[j] = x;
+  }
+  return a;
+}
+
 function loadData(tweetArr) {
-  for (var i = 0; i < tweetArr.length; i++) {
+  let all_arr = [];
+  for (let i = 0; i < tweetArr.length; i++) {
     var tweet = tweetArr[i];
-    var b = new ball(tweet['text'], tweet['name'], tweet['favorites'], tweet['followers']);
+    var b = new ball(tweet['text'], tweet['name'], tweet['favorites'], tweet['retweets']);
     b.url = tweet['url'];
+    all_arr.push(b);
+  }
+  all_arr.sort(function(a, b) {return a.rad < b.rad});
+  let bucket_size = Math.floor((all_arr.length)/3);
+  for (let i = 0; i < bucket_size; i++) {
+      all_arr[i].rad = (w/25);
+      all_arr[i].newRad = (w/25);
+      all_arr[i].time = (i/5) * ((Math.random() * 3000) + 6000);
+      all_arr[i].grow = (w/25);
+  }
+  for (let i = bucket_size; i < 2*bucket_size; i++) {
+    all_arr[i].rad = (w/20);
+    all_arr[i].newRad = (w/20);
+    all_arr[i].time = ((i - 2*bucket_size)/5) * ((Math.random() * 3000) + 3000);
+    all_arr[i].grow = (w/20);
+  }
+  for (let i = 2*bucket_size; i < all_arr.length; i++) {
+    all_arr[i].rad = (w/15);
+    all_arr[i].newRad = (w/15);
+    all_arr[i].time = ((i - 2*bucket_size)/5) * ((Math.random() * 3000) + 1000);
+    all_arr[i].grow = (w/15);
+  }
+  all_arr = shuffle(all_arr);
+  for (let i = 0; i < all_arr.length; i++) {
+    let b = all_arr[i];
     if (i < 12) {
-        bArr.push(b);
+      bArr.push(b);
     } else {
         excessArr.push(b);
     }
   }
-
-  bArr.sort(function(a, b) {return a.rad < b.rad});
-  for (var i = 0; i < bArr.length; i++) {
-      bArr[i].time = i * ((Math.random() * 2000) + 1000);
-  }
+  // console.log("small rad: " + w/24);
+  // console.log("med rad: " + w/16);
+  // console.log("large rad: " + w/10);
   drawBalls();
 }
 
-function ball(text, user, likes, followers) {
+function ball(text, user, likes, retweets) {
   this.txt = text;
   this.user = user;
   this.likes = likes;
-  this.followers = followers;
-  this.rad = ((likes + followers) % (w / 23)) + (w / 26);
+  this.retweets = retweets;
+  this.rad = likes + retweets;
   this.area = Math.PI * this.rad * this.rad;
   this.time = 0;
   this.grow = this.rad;
@@ -100,7 +135,7 @@ function copyBall(b, b2) {
     b.txt = b2.txt;
     b.user = b2.user;
     b.likes = b2.likes;
-    b.followers = b2.followers;
+    b.retweets = b2.retweets;
     b.grow = 1;
     b.newRad = b2.rad;
     b.area = b2.area;
@@ -121,7 +156,7 @@ function init(canvas) {
 }
 
 function drawBalls() {
-  var arr = [];
+  let arr = []
   for (var i = 0; i < bArr.length; i++) {
     var ball = bArr[i];
     while (!checkValidPos(ball, arr)) {
@@ -129,7 +164,7 @@ function drawBalls() {
     }
     arr.push(ball);
   }
-  bArr = arr;
+  // call draw function periodically with array of balls
   animationId = setInterval(draw, speed, bArr);
 }
 
@@ -151,11 +186,10 @@ function checkValidPos(b1, arr) {
 function draw(arr) {
   context.clearRect(0,0, w, h);
   for (var i = 0; i < arr.length; i++) {
-    var b = arr[i];
-    if (b.time >= waitTime) {
+    var b = arr[i];  // modifying object within bArr
+    if (b.time >= waitTime) { // in shrink phase
         b.rad -= 1.5;
         if (b.rad < 1) {
-            // destroyBall(b);
             b.highlight = false;
             if (excessArr.length != 0) {
               copyBall(b, excessArr.shift());
@@ -163,7 +197,7 @@ function draw(arr) {
         }
     }
 
-    if (b.grow < b.newRad) {
+    if (b.grow < b.newRad) { // in grow phase
         b.rad += 0.3;
         b.grow += 0.3;
     }
@@ -356,20 +390,6 @@ function displayText(b) {
   invisibleDiv.innerHTML = b.txt;
   invisibleDiv.style.width = w / 2.2 + "px";
   invisibleDiv.style.visibility = "visible";
-}
-
-// not being used
-function destroyBall(b) {
-    //animate b getting destroyed
-    var newArr = [];
-    for (var i = 0; i < bArr; i++) {
-        var newBall = bArr[i];
-        if (newBall !== b) {
-            newArr.push(newBall);
-        }
-    }
-    bArr = newArr;
-    bArr.push(excessArr.shift());
 }
 
 function getNewBalls() {
